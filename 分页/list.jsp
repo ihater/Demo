@@ -1,9 +1,9 @@
 	<!-- 
-								ÄÃµ½ÎÒÃÇµÄ  pageBean ÖÐµÄ ÉÌÆ·µÄÐÅÏ¢
+								æ‹¿åˆ°æˆ‘ä»¬çš„  pageBean ä¸­çš„ å•†å“çš„ä¿¡æ¯
 						 -->
 						<s:iterator var="p" value="pageBean.list">
 						<li>
-							<!--  ÉÌÆ·µÄÏêÇéÐÅÏ¢µÄ²éÑ¯ÇëÇó -->
+							<!--  å•†å“çš„è¯¦æƒ…ä¿¡æ¯çš„æŸ¥è¯¢è¯·æ±‚ -->
 							<a href="${pageContext.request.contextPath}/product_findByPid.action?pid=<s:property value="#p.pid"/>">
 								<img src="${pageContext.request.contextPath}/<s:property value="#p.image"/>" width="170" height="170"  style="display: inline-block;">
 								   
@@ -12,7 +12,7 @@
 								</span>
 								 
 								<span class="price">
-									ÉÌ³Ç¼Û£º £¤<s:property value="#p.shop_price"/>
+									å•†åŸŽä»·ï¼š ï¿¥<s:property value="#p.shop_price"/>
 								</span>
 								 
 							</a>

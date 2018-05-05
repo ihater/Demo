@@ -7,15 +7,15 @@
 
 
 
-		// 2.QBC½øĞĞ·ÖÒ³:
+		// 2.QBCè¿›è¡Œåˆ†é¡µ:
 		Criteria criteria = session.createCriteria(Order.class);
 		criteria.setFirstResult(10);
 		criteria.setMaxResults(10);
 		List<Order> list = criteria.list();
 
 
-		// 1.HQL½øĞĞ·ÖÒ³:
+		// 1.HQLè¿›è¡Œåˆ†é¡µ:
 		/*
-		 * Query query = session.createQuery("from Order");    		// ÕâÊÇ·µ»ØÒ»¸ö query ½Ó¿Ú
-		 * query.setFirstResult(10); 								//´ÓµÚ¼¸Ìõ²éÑ¯
-		 * query.setMaxResults(10); 							   	// Ã¿Ò³¶àÉÙÌõ
+		 * Query query = session.createQuery("from Order");    		// è¿™æ˜¯è¿”å›ä¸€ä¸ª query æ¥å£
+		 * query.setFirstResult(10); 								//ä»ç¬¬å‡ æ¡æŸ¥è¯¢
+		 * query.setMaxResults(10); 							   	// æ¯é¡µå¤šå°‘æ¡

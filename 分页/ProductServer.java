@@ -1,23 +1,23 @@
-// ·ÖÀàÒ³ÃæµÄÏÔÊ¾ÉÌÆ·µÄ·½·¨ £¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡
+// åˆ†ç±»é¡µé¢çš„æ˜¾ç¤ºå•†å“çš„æ–¹æ³• ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼
 	public PageBean<Product> findByPage(Integer cid, Integer page) {
-		int limit = 12; // Ã¿Ò³ÏÔÊ¾¼ÇÂ¼Êı.
-		int totalPage = 0; // ×ÜÒ³Êı
+		int limit = 12; // æ¯é¡µæ˜¾ç¤ºè®°å½•æ•°.
+		int totalPage = 0; // æ€»é¡µæ•°
 		PageBean<Product> pageBean = new PageBean<Product>();
 		pageBean.setPage(page);
 		pageBean.setLimit(limit);
-		// ²éÑ¯×Ü¼ÇÂ¼Êı:
+		// æŸ¥è¯¢æ€»è®°å½•æ•°:
 		Integer totalCount = productDao.findCountByCid(cid);
 		
 		pageBean.setTotalCount(totalCount);
 		
-		// ×ÜÒ³ÊıµÄ·â×°
+		// æ€»é¡µæ•°çš„å°è£…
 		if(totalCount % limit == 0){
 			totalPage = totalCount / limit;
 		}else{
 			totalPage = totalCount / limit + 1;
 		}
 		pageBean.setTotalPage(totalPage);
-		// ÉÌÆ·Êı¾İ¼¯ºÏ:
+		// å•†å“æ•°æ®é›†åˆ:
 		int begin = (page - 1) * limit;
 		List<Product> list = productDao.findByPage(cid,begin ,limit);
 		pageBean.setList(list);
