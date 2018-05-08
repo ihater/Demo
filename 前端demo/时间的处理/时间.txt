@@ -1,0 +1,79 @@
+前台：
+	<td>出生日期</td>
+	<td>										 value= 是拿到回传的值
+		<input type="text"  size="14" onfocus="c.showMoreDay=false;c.show(this);" readonly="true" value="${eqm.birthdayView}"/>
+		<s:hidden name="eqm.birthday"/>						我们提交数据，是靠这个  js里面 有
+	realValueObject.value = tempDate.getTime();							//将值放入隐藏组件
+	</td>
+	<td>出生日期</td>
+	<td>
+		<input type="text" size="14" onfocus="c.showMoreDay=false;c.show(this);" readonly="true"  value="${eqm.birthday2View}"/>
+		<s:hidden name="eqm.birthday2"/>
+	</td>
+
+====================================================================================
+
+Action封装数据：
+	public EmpModel em = new EmpModel();
+	public EmpQueryModel eqm = new EmpQueryModel();
+
+	处理数据：
+
+	List<EmpModel> empList = empEbi.getAll(eqm,pageNum,pageCount);	
+	put("empList", empList);
+
+beam：
+
+public class EmpQueryModel extends EmpModel implements BaseQueryModel{
+	//追加生日作为查询条件的最大值字段
+	private Long birthday2;
+	private String birthday2View;
+	
+	public String getBirthday2View() {
+		return birthday2View;
+	}
+	public Long getBirthday2() {
+		return birthday2;
+	}
+	public void setBirthday2(Long birthday2) {
+		this.birthday2 = birthday2;
+		this.birthday2View = FormatUtil.formatDate(birthday2);
+	}
+	
+}
+
+
+====================================================================================
+
+Service：	public List<EmpModel> getAll() {
+		return empDao.getAll();
+	}
+
+
+dao层：
+
+	public List<T> getAll(BaseQueryModel qm, Integer pageNum,Integer pageCount) {
+		DetachedCriteria dc = DetachedCriteria.forClass(entityClass);
+		
+		doQbc(dc,qm);			这里是 判断 bean参数中查询数据的判断，过滤
+		
+		return this.getHibernateTemplate().findByCriteria(dc,(pageNum-1)*pageCount,pageCount);
+	}
+
+
+
+
+
+public void doQbc(DetachedCriteria dc,BaseQueryModel qm){
+
+		EmpQueryModel eqm = (EmpQueryModel)qm;
+		
+		//birthday
+		if(eqm.getBirthday()!=null){
+			dc.add(Restrictions.ge("birthday", eqm.getBirthday()));
+		}
+		//birthday2
+		if(eqm.getBirthday2()!=null){
+			dc.add(Restrictions.le("birthday", eqm.getBirthday2()+86400000-1));		如果我们查 1号 到 1 号之间的数据
+		}									原来的比较，是比较 两个一样 的毫秒值
+}										所以查出来的数据是在 一毫秒 内的，所以我们要加一天
