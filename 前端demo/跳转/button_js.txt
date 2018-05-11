@@ -1,0 +1,8 @@
+<button type="button" id="add" name="add" value="Ìí¼Ó" class="button_add" onclick="addProduct()">
+
+			function addProduct(){
+				window.location.href = "${pageContext.request.contextPath}/product_addPage.action";
+			}
+
+
+<a href="${ pageContext.request.contextPath }/product_adminFindAll.action?page=<s:property value="pageBean.page+1"/>">ÏÂÒ»Ò³</a> |
