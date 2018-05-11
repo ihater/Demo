@@ -1,0 +1,8 @@
+	<action name="download" class="cn.itcast.action.DownloadAction">
+			<result type="stream">
+				<param name="contentType">${contentType}</param> <!-- 调用当前action中的getContentType()方法 -->
+				<param name="contentDisposition">attachment;filename=${downloadFileName}</param>
+				<param name="inputStream">${inputStream}</param><!-- 调用当前action中的getInputStream()方法 -->
+				<!-- inputStream 这个标签不写，默认也是inputString -->
+			</result>
+		</action>
