@@ -1,0 +1,83 @@
+//显示菜单
+	public void showMenu() throws IOException{
+
+
+		//1.首先获取root参数
+		String root = getRequest().getParameter("root");			这个  root ，就是我们目录树 要请求 那个 uuid
+
+
+		//2.判断参数值   source   id
+		HttpServletResponse response = getResponse();
+		
+		response.setContentType("text/html;charset=utf-8");		手动设置字符集，如果是在Servlet 的话
+
+
+		PrintWriter pw = response.getWriter();				把  我们  要拼接的  目录树 放到 流
+		
+		StringBuilder json = new StringBuilder();
+		json.append("[");
+		
+		if("source".equals(root)){					访问首页，第一次请求是 root 没有 uuid ，所以是 source
+			//生成一级菜单
+			List<MenuModel> menuList = menuEbi.getAllOneLevelByEmp(getLogin().getUuid());		查询我们的目录，当前用户可以操作的目录
+
+			for(MenuModel temp :menuList){
+				json.append("{\"text\":\"");
+				json.append(temp.getName());						为什么不用字符串拼接，因为拼接粗腰很多内存存字符串
+				json.append("\",\"hasChildren\":true,\"classes\":\"folder\",\"id\":\"");		\"hasChildren  有没有子菜单	
+				json.append(temp.getUuid());						\"classes   树转图 的 样式
+				json.append("\"},");
+			}
+		}else{
+			//生成二级菜单项
+			//获取指定一级菜单的二级菜单项
+			Long puuid = new Long(root);
+			List<MenuModel> menuList = menuEbi.getByEmpAndPuuid(getLogin().getUuid(),puuid);
+			for(MenuModel temp :menuList){
+				json.append("{\"text\":\"<a class='hei' target='main' href='");
+				json.append(temp.getUrl());
+				json.append("'>");
+				json.append(temp.getName());
+				json.append("</a>\",\"hasChildren\":false,\"classes\":\"file\"},");
+			}
+		}
+		
+		json.deleteCharAt(json.length()-1);				删除最后一个逗号
+		json.append("]");
+		
+		pw.write(json.toString());
+		pw.flush();
+	}
+
+============================================================================================================
+
+Service：//生成一级菜单
+
+	public List<MenuModel> getAllOneLevelByEmp(Long uuid) {
+		return menuDao.getAllOneLevelByEmpUuid(uuid);
+	}
+
+
+	//生成二级菜单项
+	//获取指定一级菜单的二级菜单项
+	public List<MenuModel> getByEmpAndPuuid(Long uuid, Long puuid) {
+		return menuDao.getByEmpUuidAndPuuid(uuid,puuid);
+	}
+
+============================================================================================================
+
+Dao：
+//生成一级菜单
+	public List<MenuModel> getAllOneLevelByEmpUuid(Long uuid) {
+		//menu->role->emp
+		String hql ="select distinct menu from MenuModel menu join menu.roles role join role.emps emp where emp.uuid = ? and menu.parent.uuid = ? order by menu.uuid";
+		return this.getHibernateTemplate().find(hql,uuid,MenuModel.MENU_SYSTEM_MENU_UUID);
+	}
+
+//生成二级菜单项		distinct   去重		用户 1 	角色 1 		操作  1、2、3
+						用户 2 	角色 2 		操作   1、5		没去重会	menue 的结果   操作   1、2、3、1、5
+
+	public List<MenuModel> getByEmpUuidAndPuuid(Long uuid, Long puuid) {
+		String hql ="select distinct menu from MenuModel menu join menu.roles role join role.emps emp where emp.uuid = ? and menu.parent.uuid = ? order by menu.uuid";
+		return this.getHibernateTemplate().find(hql,uuid,puuid);
+	}
