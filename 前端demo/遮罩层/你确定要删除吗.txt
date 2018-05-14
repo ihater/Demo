@@ -1,0 +1,12 @@
+<%@include file="/WEB-INF/jsps/tools/mask.jsp"%>
+
+<a href="javascript:void(0)" class="xiu" onclick="showMsg('是否删除当前部门信息？',${uuid})">删除</a>	
+
+function showMsg(msg,uuid){
+		//显示遮罩层
+		top.lock.show();				因为我们用了 ifram ，我们用的  js 是在当前 ifram 外的，所以top 一下
+		//显示数据区
+		top.$('context-msg').style.display = "block";
+		top.$('context-msg-text').innerHTML = msg;				JS里面，用innerHTTML
+		top.$('hid-action').value = "dep_delete.action?dm.uuid="+uuid;
+	}
