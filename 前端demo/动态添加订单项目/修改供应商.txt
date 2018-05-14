@@ -1,0 +1,38 @@
+	$(function(){
+		//修改供应商
+		$("#supplier").change(function(){
+		
+			//ajax获取类别信息+商品信息，条件：供应商uuid
+			var supplierUuid = $(this).val();
+			$.post("order_ajaxGetGtmAndGm.action",{"supplierUuid":supplierUuid},function(data){
+				$(".goodsType").empty();
+				$(".goods").empty();
+				//data中封装了两个json数组 data.gtmList  data.gmList 和对象 data.gm
+				
+				//修改类别select
+				var gtmList = data.gtmList;
+				for(var i = 0;i<gtmList.length;i++){
+					var gtm = gtmList[i];
+					$op = $("<option value='"+gtm.uuid+"'>"+gtm.name+"</option>");
+					$(".goodsType").append($op);
+				}
+				//修改商品select
+				var gmList = data.gmList;
+				for(var i = 0;i<gmList.length;i++){
+					var gm = gmList[i];
+					$op = $("<option value='"+gm.uuid+"'>"+gm.name+"</option>");
+					$(".goods").append($op);
+				}
+				
+				var price = data.gm.inPriceView;
+				//修改数量为1
+				$(".num").val(1);
+				//修改单价
+				$(".prices").val(price);
+				//修改合计
+				$(".total").html(price +" 元");
+				//计算总价
+				total2();
+			})
+		});
+	}	

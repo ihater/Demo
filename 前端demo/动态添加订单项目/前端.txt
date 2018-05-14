@@ -1,0 +1,68 @@
+<div >
+	<s:form action="order_buySave" method="post">
+	<div >
+		<table    style="font-size:14px; font-weight:bold; font-family:"黑体";">
+			<tr>
+				<td  >供应商：</td>
+				<td >
+					<s:select name="om.sm.uuid" id="supplier" list="supplierList" listKey="uuid" listValue="name" ></s:select>
+				</td>
+				<td >
+					<a id="add"><img src="images/can_b_02.gif"  /> </a>
+				</td>
+			</tr>
+		</table>
+	</div>
+			<!--"square-o-top"end-->
+	<div >
+		<table id="order"  >
+		<tr align="center"    style="background:url(images/table_bg.gif) repeat-x;">
+			<td  >商品类别</td>
+			<td >商品名称</td>
+			<td >采购数量</td>
+			<td >单价</td>
+			<td >合计</td>
+			<td >操作</td>
+		</tr>
+		<tr align="center" >
+			<td >
+				<s:select  list="gtmList" listKey="uuid" listValue="name" ></s:select>
+			</td>
+			<td>
+				<s:select name="goodsUuids"  list="gmList" listKey="uuid" listValue="name" ></s:select>
+			</td>
+				<td><input name="nums" /></td>
+				<td><input name="prices" /> 元</td>
+				<td  align="right">${gmList[0].inPriceView}&nbsp;元</td>
+			<td>
+				<a  /> 删除</a>
+			</td>
+		</tr>
+
+		<tr id="finalTr" align="center"   style="background:url(images/table_bg.gif) repeat-x;">
+			<td   align="right">总&nbsp;计:&nbsp;</td>
+			<td   align="right">${gmList[0].inPriceView}&nbsp;元</td>
+			<td>&nbsp;</td>
+		</tr>
+
+
+		</table>
+
+		<div >
+			<div style="margin:1px auto auto 1px;">
+				<table     >
+				  <tr>
+					 <td>
+						<a href="javascript:void(0)" id="submitOrder"><img src="images/order_tuo.gif"  /></a>
+					</td>
+					<td>&nbsp;</td>
+					<td><a href="#"><img src="images/order_tuo.gif"  /></a></td>
+					<td>&nbsp;</td>
+					<td><a href="#"><img src="images/order_tuo.gif"  /></a></td>
+				 </tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</s:form>
+	</div>
