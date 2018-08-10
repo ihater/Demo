@@ -1,0 +1,6 @@
+如果要查询语句需要用到  limit  的话，就用这个工具类
+
+demo：
+
+List<Product> list = this.getHibernateTemplate().executeFind(new PageHibernateCallback<Product>("from Product where is_hot=?", new Object[]{1}, 0, 10));
+													如果需要传参，这是一个可变参数，起始条数，每页几条
