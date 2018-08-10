@@ -1,0 +1,26 @@
+public class BaseAction  extends ActionSupport{
+	
+	public Integer pageNum = 1;			设置成 public ，就可以拿到值了
+	public Integer pageCount = 10;
+	public Integer maxPageNum;
+	public Integer dataTotal;
+
+	//跳转到列表页面
+	public String list(){
+		setDataTotal(depEbi.getCount(dqm));
+		List<DepModel> depList = depEbi.getAll(dqm,pageNum,pageCount);
+		put("depList", depList);
+		return LIST;
+	}
+}
+
+
+
+
+	public List<T> getAll(BaseQueryModel qm, Integer pageNum,Integer pageCount) {
+		DetachedCriteria dc = DetachedCriteria.forClass(entityClass);
+		
+		doQbc(dc,qm);
+		
+		return this.getHibernateTemplate().findByCriteria(dc,(pageNum-1)*pageCount,pageCount);
+	}

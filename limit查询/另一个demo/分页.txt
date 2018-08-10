@@ -1,0 +1,14 @@
+
+
+<s:form action="emp_list" method="post">
+
+```````````````````````````````````````````````````````
+</s:form>
+
+
+
+
+<%@ include file="/WEB-INF/jsps/tools/paging.jsp" %>
+
+
+
