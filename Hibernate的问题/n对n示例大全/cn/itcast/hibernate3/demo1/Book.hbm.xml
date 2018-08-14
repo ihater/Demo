@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.hibernate3.demo1.Book" table="book" select-before-update="true">
+		<!-- 配置唯一标识 -->
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native"/>
+		</id>
+		<!-- 配置普通属性 -->
+		<property name="name" column="name" length="30"/>
+		<property name="author" column="author" length="20"/>
+		<property name="price" column="price"/>
+	</class>
+</hibernate-mapping>
