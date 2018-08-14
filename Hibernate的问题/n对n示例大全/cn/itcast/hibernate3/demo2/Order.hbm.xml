@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.hibernate3.demo2.Order" table="orders">
+		<!-- 配置唯一标识  -->
+		<id name="oid" column="oid">
+			<generator class="native"/>
+		</id>
+		<!-- 配置普通属性 -->
+		<property name="addr" column="addr" length="50"/>
+		
+		
+		<!-- 配置映射 -->
+		<!-- 
+		<many-to-one>标签         			我们在多的这张表中，有这三个属性
+			name 	:关联对象的属性的名称.
+			column	:表中的外键名称.
+			class	:关联对象类的全路径
+		-->
+		<!-- 
+			注意！！！这里我们有    <many-to-one>  和  <one-to-many>
+			要区分好使在哪张表中用的   在一对多的时候
+			在 多 的这张表 中   我们的字段就用   <many-to-one>   谁是多的一方  many 就在前面
+		 -->
+		<many-to-one name="customer" column="cno" class="cn.itcast.hibernate3.demo2.Customer"/>
+	</class>
+</hibernate-mapping>
+
+
+

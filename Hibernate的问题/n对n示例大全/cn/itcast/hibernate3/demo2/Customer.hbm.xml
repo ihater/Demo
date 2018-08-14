@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<!-- 
+	别忘了，把我们的配置文件，到核心配置文件中去加载
+ -->
+	<class name="cn.itcast.hibernate3.demo2.Customer" table="customer">
+		<!-- 配置唯一标识 -->
+		<id name="cid" column="cid">
+			<generator class="native"/>
+		</id>
+		<!-- 配置普通属性 -->
+		<property name="cname" column="cname" length="20"/>
+		
+		<!-- 建立映射 -->
+		<!-- 
+			配置一个集合 <set>的name Customer对象中的关联对象的属性名称.     我们要关联 Order 这张表，所以要写 orders
+			因为我们一个客户有多个订单，所以我们用集合来存放订单    -----这是一个订单的集合
+		-->
+		<set name="orders" cascade="save-update,delete" inverse="true">
+		
+			<!-- 
+				<key>标签中column:用来描述一对多多的一方的外键的名称. 
+				而且我们的 colum 的值 得等 我们在多的那一张 中设置的  column="cno"   一样
+				不然框架就会帮我们创建两个外键了
+			-->		
+			<key column="cno"></key>						
+			
+			<!-- 配置一个<one-to-many>标签中class属性:订单的类的全路径 -->
+			<one-to-many class="cn.itcast.hibernate3.demo2.Order"/>
+		</set>
+	</class>
+</hibernate-mapping>
+
