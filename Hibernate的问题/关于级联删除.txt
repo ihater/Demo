@@ -1,0 +1,33 @@
+设置了级联删除：Hibernate 的删除，是对外键设置成 null，但是如果在一的表上有对外键的维护，他对应的多的表上没有数据，就会报错，所以，一的表上，要放弃对外键的维护
+
+	一对多，在一上配置 级联  	
+		<set name="orders" cascade="save-update,delete" inverse="true">		
+		在保存，更新，删除的时候，会级联更新多的表
+		设置完，只保存 Customer 的时候，级联保存 orders
+
+	在多对一，在多上配置级联
+		<many-to-one name="customer" column="cno" cascade="save-update,delete"  class="cn.itcast.hibernate3.demo2.Customer"/>
+
+
+
+// 让1号客户与1号订单解除关系（解除关系，只是将 外键设置为  null，并没有删除数据）:
+
+	要让 孤儿 订单 自动删除，我们要配置 孤儿删除   	 在Customer.hbm.xml中<set>上配置cascade="delete-orhpan"
+
+		Customer customer = (Customer) session.get(Customer.class, 1);   // 首先我们要先查到 1号 客户
+		
+		Order order = (Order) session.get(Order.class, 1);				// 然后我们要找到 我们的 1号订单
+		
+		customer.getOrders().remove(order);						// 拿到客户的  订单  并解除  哪张订单的关系	
+
+
+
+
+优化：  双向维护会产生 多余的 SQL 语句（为什么？？看图）
+
+	<set name="orders" cascade="save-update,delete" inverse="true">，让一端放弃对外键的 维护  inverse="true
+	一般，外键的维护都是在  多的  表上  维护的，因为，这个外键就在自己表上
+	放弃对外键的维护，是在对照一级缓存和快照区的时候，对于外键的比较是否会触发SQL 更新
+	放弃对外键的维护，就不会因为外键不同而触发更新
+	
+	放弃对外键的维护    和  级联不一样的！！！！！！  只是放弃对外键的维护而已，还是会触发级联的	
