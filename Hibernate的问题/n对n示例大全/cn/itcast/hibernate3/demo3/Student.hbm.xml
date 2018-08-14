@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<!-- 
+	多对多的  配置
+	在  set 中 配置中间表，然后在里面，设置 中间 表的 两个外键
+ -->
+	<class name="cn.itcast.hibernate3.demo3.Student" table="student">
+		<!-- 配置唯一标识 -->
+		<id name="sid" column="sid">
+			<generator class="native"/>
+		</id>
+		<!-- 配置普通属性 -->
+		<property name="sname" column="sname" length="20"/>
+		
+		<!-- 配置关联映射 -->
+		<!-- <set>标签 name:对应学生中的课程集合的名称   table:中间表名称.   如果两张表的配置 中间表 不一致，就会生成两张中间表 -->
+		
+		<set name="courses" table="stu_cour" cascade="save-update,delete">
+		
+			<!-- <key>中column写 当前类在中间表的外键.-->
+			<key column="sno"></key>
+			
+			<!-- <many-to-many>中class:另一方类的全路径. column:另一方在中间表中外键名称-->
+			<many-to-many class="cn.itcast.hibernate3.demo3.Course" column="cno"/>
+		</set>
+	</class>
+</hibernate-mapping>

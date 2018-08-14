@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.hibernate3.demo3.Course" table="course">
+		<!-- 配置唯一标识 -->
+		<id name="cid" column="cid">
+			<generator class="native"/>
+		</id>
+		<!-- 配置普通属性 -->
+		<property name="cname" column="cname" length="20"/>
+		<!-- 配置与学生关联映射 -->
+		<!-- <set>中name:对应当前类中的学生的集合的名称  table:中间表的名称-->
+		<set name="students" table="stu_cour" inverse="true">
+			<!-- <key>中column:当前类在中间表中外键 -->
+			<key column="cno"></key>
+			<!-- <many-to-many>中class:另一方的类全路径. column:另一方在中间表中外键名称 -->
+			<many-to-many class="cn.itcast.hibernate3.demo3.Student" column="sno"/>
+		</set>
+	</class>
+</hibernate-mapping>
