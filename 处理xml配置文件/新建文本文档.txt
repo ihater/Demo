@@ -1,0 +1,8 @@
+		// 配置文件（SqlMapConfig.xml）
+		String resource = "SqlMapConfig.xml";
+
+		// 加载配置文件到输入 流
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+
+		// 创建会话工厂
+		sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
