@@ -1,0 +1,107 @@
+一对多查询，查询用户及订单明细和商品信息
+通过用户查询订单，通过订单查订明细
+
+pojo：
+
+public class User implements Serializable {
+	private int id;
+
+	//多个订单
+	private List<Orders> orderlist;
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+public class Orders implements Serializable {			（省略  get    set）
+
+    private Integer id;
+
+    private Integer userId;
+
+    private String number;
+
+    //订单明细
+    private List<Orderdetail> orderdetails;					在一的一方，创建到多一方的List
+
+    
+    //关联用户信息
+    private User user;
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+XML：
+
+	
+	<!-- 一对多查询，查询用户及订单明细和商品信息 -->
+
+=======<!-- 用户信息映射 -->		用户里有 订单信息 的 引用
+=======	<!-- 订单信息 -->		订单里有 订单明细的 引用
+=======		<!-- 订单明细映射 -->
+
+	<resultMap type="user" id="userOrderDetailResultMap">
+		<!-- 用户信息映射 -->
+		<id column="user_id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+
+		<!-- 订单信息 -->
+		<!-- 映射订单明细信息 
+			property：要将关联信息映射到orders的哪个属性中
+			ofType：集合中pojo的类型	pojo  private List<Orders> orderlist;
+		-->
+		<collection property="orderlist" ofType="cn.itcast.mybatis.po.Orders">
+				<id column="id" property="id"/>
+				<result column="user_id" property="userId"/>
+				<result column="number" property="number"/>
+				<result column="createtime" property="createtime"/>
+				<result column="note" property="note"/>
+
+				<!-- 订单明细映射 -->
+				<collection property="orderdetails" ofType="cn.itcast.mybatis.po.Orderdetail">
+					<!-- id：关联信息订单明细的唯 一标识
+					property：Orderdetail的属性名
+					  -->
+					<id column="orderdetail_id" property="id"/>
+					<result column="items_num" property="itemsNum"/>
+					<result column="items_id" property="itemsId"/>
+					<!-- 商品信息 -->
+					<association property="items" javaType="cn.itcast.mybatis.po.Items">
+						<id column="item_id" property="id"/>
+						<result column="items_name" property="name"/>
+						<result column="items_detail" property="detail"/>
+					</association>
+				</collection>
+		</collection>
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+	 <!-- 
+		一对多查询使用reusltMap完成
+		查询订单关联查询订单明细
+	 -->
+<select id="findOrderAndOrderDetails" resultMap="orderAndOrderDetails" >
+	SELECT 
+	  orders.*,
+	  user.username,
+	  user.sex ,
+	  orderdetail.id orderdetail_id,
+	  orderdetail.items_num,
+	  orderdetail.items_id
+	FROM
+	  orders,
+	  USER,
+	  orderdetail
+	WHERE orders.user_id = user.id  AND orders.id = orderdetail.orders_id
+ </select>
+	 
+   
+
+
+
+
+	
