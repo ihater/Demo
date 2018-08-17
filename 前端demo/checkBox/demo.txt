@@ -1,0 +1,141 @@
+前端：
+	      	<input type="checkbox" id="all">全选&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	      	<input type="checkbox" id="reverse">反选
+
+		<s:checkboxlist name="roleUuids" list="roleList" listKey="uuid" listValue="name"></s:checkboxlist>
+
+<script type="text/javascript">
+	$(function() {
+		$("#all").click(function() {
+			$("[name=roles]:checkbox").attr("checked",$("#all").attr("checked")=="checked");
+		});
+		$("#reverse").click(function() {
+			$("[name=roles]:checkbox").each(function () {
+                $(this).attr("checked", !$(this).attr("checked"));
+            });
+
+		});
+	});
+</script>
+====================================================================================================
+
+action查找封装数据：
+		
+		private RoleEbi roleEbi;
+
+		public void setRoleEbi(RoleEbi roleEbi) {			
+			this.roleEbi = roleEbi;
+		}
+
+		//加载所有角色信息数据
+		List<RoleModel> roleList = roleEbi.getAll();
+		put("roleList",roleList);
+
+
+service：（roleEbi的 getAll）
+	public List<RoleModel> getAll() {
+		return roleDao.getAll();
+	}
+
+====================================================================================================
+
+Dao：
+	public List<T> getAll() {
+		DetachedCriteria dc = DetachedCriteria.forClass(entityClass);
+		return this.getHibernateTemplate().findByCriteria(dc);
+	}
+
+
+====================================================================================================
+
+我们的员工 bean：给员工添加角色
+EmpModel {
+
+	//对角色多对多
+	private Set<RoleModel> roles;
+	
+	public Set<RoleModel> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<RoleModel> roles) {
+		this.roles = roles;
+	}
+====================================================================================================
+
+接受请求封装数据：
+	
+	//配置文件注入Service
+	private EmpEbi empEbi;
+
+	public void setEmpEbi(EmpEbi empEbi) {			要加  set 方法
+		this.empEbi = empEbi;
+	}
+
+	//如何接收页面传递的多个参数使用相同的name值
+	public Long[] roleUuids;			数组
+
+	//添加
+	public String save(){
+	        empEbi.save(em,roleUuids);
+	}
+
+====================================================================================================
+
+添加员工的时候，添加权限：
+
+Service：			
+			权限Model       角色id  数组
+	public void save(EmpModel em, Long[] roleUuids) {
+
+
+		//创建em对象与角色的关系（多对多）
+		//em对象中添加role的集合关系
+		
+		Set<RoleModel> roles = new HashSet<RoleModel>();
+
+		//array->set
+
+		for(Long uuid:roleUuids){
+			//创建RoleModel对象，将uuid设置到对象中，		将对象添加到集合中
+			RoleModel temp = new RoleModel();
+			temp.setUuid(uuid);
+			roles.add(temp);
+		}
+		em.setRoles(roles);
+		
+		em.setPwd(MD5Utils.md5(em.getPwd()));				添加  新员工   的其他属性
+		em.setLastLoginTime(System.currentTimeMillis());
+		em.setLastLoginIp("-");
+		em.setLoginTimes(0);
+		empDao.save(em);
+	}
+
+
+====================================================================================================
+public void update(EmpModel em, Long[] roleUuids) {
+		EmpModel temp = empDao.get(em.getUuid());
+		
+		temp.setName(em.getName());
+		temp.setEmail(em.getEmail());
+		temp.setTele(em.getTele());
+		temp.setGender(em.getGender());
+		temp.setAddress(em.getAddress());
+		temp.setDm(em.getDm());
+		
+		//array->set->对象（temp）
+		Set<RoleModel> roles = new HashSet<RoleModel>();
+		//array->set
+		for(Long uuid:roleUuids){
+			//创建RoleModel对象，将uuid设置到对象中，将对象添加到集合中
+			RoleModel temp2 = new RoleModel();
+			temp2.setUuid(uuid);
+			roles.add(temp2);
+		}
+		temp.setRoles(roles);
+		
+		//该操作引发的SQL语句
+		//删除原始的所有关系
+		//重新建立所有关系
+		
+	}
+update
