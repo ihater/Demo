@@ -1,0 +1,16 @@
+<a href="javascript: window.showModalDialog('${pageContext.request.contextPath}/processDefinitionAction_showPng.action?pdId=${id }','','dialogHeight:500px;dialogWidth:800px');">查看流程图</a>
+
+
+
+		InputStream in = processDefinitionService.findPngStream(pdId);
+		ActionContext.getContext().put("pngStream", in);
+
+
+
+
+			<result name="showPng" type="stream">
+				<param name="contentType">image/png</param>
+				<param name="inputName">pngStream</param>
+				<!-- <param name="contentDisposition">attachment;filename="document.pdf"</param> -->
+				<!-- <param name="bufferSize">1024</param> -->
+			</result>
