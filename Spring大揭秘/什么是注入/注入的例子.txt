@@ -1,0 +1,18 @@
+application.xml
+
+	<!-- redis单机版 -->
+	<!-- bean就是实例化redis.clients.jedis.JedisPool构造函数，传入参数，对象叫jedisPool -->
+	<!-- 然后在service 层，拿到的就是这个对象 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="host" value="192.168.220.110"/>	
+		<constructor-arg name="port" value="6379"/>	
+	</bean>
+
+---------------------------------------------------------------------------------------------------------------------
+
+java：
+
+public class JedisClientPool implements JedisClient {
+	
+	@Autowired
+	private JedisPool jedisPool;		这里拿到的对象，就是从配置文件注入的
