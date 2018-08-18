@@ -1,0 +1,51 @@
+后台获取方式一 spring4.1以上版本使用、
+@RequestMapping(value="/user/token/{token}", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getUserByToken(@PathVariable String token, String callback) {
+		TaotaoResult result = userService.getUserByToken(token);
+		//判断是否为jsonp请求
+		if (StringUtils.isNotBlank(callback)) {
+			MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(result);
+			//设置回调方法，这个就是来实现 callback 字符串拼接的
+			mappingJacksonValue.setJsonpFunction(callback);
+			return mappingJacksonValue;
+		}
+		return result;
+	}
+	
+---------------------------------------------------------------------------------------------------
+     
+后台获取方式二（拼接callback字符串）、
+@RequestMapping(value="/user/token/{token}", method=RequestMethod.GET, 
+			//指定返回响应数据的content-type，不然默认是text-pain 就不能解析json数据了
+			produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public String getUserByToken(@PathVariable String token, String callback) {
+		TaotaoResult result = userService.getUserByToken(token);
+		//判断是否为jsonp请求
+		if (StringUtils.isNotBlank(callback)) {
+			return callback + "(" + JsonUtils.objectToJson(result) + ");";
+		}
+		return JsonUtils.objectToJson(result);
+	}
+
+---------------------------------------------------------------------------------------------------
+                          
+checkLogin : function(){
+		var _ticket = $.cookie("TT_TOKEN");
+		if(!_ticket){
+			return ;
+		}
+		$.ajax({
+			url : "http://localhost:8084/user/token/" + _ticket,
+			dataType : "jsonp",
+			type : "GET",
+			success : function(data){
+				if(data.status == 200){
+					var username = data.data.username;
+					var html = username + "，欢迎来到淘淘！<a href=\"http://www.taotao.com/user/logout.html\" class=\"link-logout\">[退出]</a>";
+					$("#loginbar").html(html);
+				}
+			}
+		});
+	}
