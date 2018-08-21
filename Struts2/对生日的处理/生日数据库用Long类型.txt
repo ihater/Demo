@@ -1,0 +1,83 @@
+Model：
+
+	private Long birthday;
+
+	public Long getBirthday() {					前台显示取值
+		return birthday;
+	}
+
+	public void setBirthday(Long birthday) {				Struts2自动封装请求数据的
+		this.birthday = birthday;
+		this.birthdayView = FormatUtil.formatDate(birthday);
+	}
+	
+	//视图值：视图值是一种用于界面显示的变量值，该值不具体对应某个数据库字段，它服务于某个数据库字段
+	//当数据库中的某个字段值不便于直接显示时，为该字段添加视图值，用于显示对应的信息
+	//1.定义一个String类型的变量，变量名是无法合理显示的字段的字段名+View
+	//2.提供其get方法
+	//3.在其对应的变量的set方法中对这个View值进行初始化
+
+
+	private String birthdayView;					不提供  set 方法，因为，前端不会传 这个值
+
+	public String getBirthdayView() {
+		return birthdayView;					这个birthdayView 在 setBirthday 已经设置了
+	}							提供  get 让前端可以拿到值
+
+
+========================================================================
+
+public class FormatUtil {
+	public static final String formatDate(Long time){
+		if(time  == null ) return "";
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		return  df.format(new Date(time)); 
+	}
+	public static final String formatTime(Long time){
+		if(time  == null ) return "";
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		return  df.format(new Date(time)); 
+	}
+	public static final String formatDateTime(Long time){
+		if(time  == null ) return "";
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return  df.format(new Date(time)); 
+	}
+	public static final String formatMoney(Double money){
+		if(money == null) return "非法格式";
+		 DecimalFormat df = new DecimalFormat("#.00");
+	     return df.format(money);
+	}
+	
+}
+
+========================================================================
+
+Action：
+	public EmpModel em = new EmpModel();			这里提供一个 public 就可以 自动封装数据了
+
+
+查询数据：
+	public String list(){
+		//加载所有信息：
+
+		List<EmpModel> empList = empEbi.getAll(eqm,pageNum,pageCount);
+		put("empList", empList);
+		return LIST;
+	}
+
+========================================================================
+
+前台显示：
+
+<s:iterator value="empList">
+
+              <tr align="center" bgcolor="#FFFFFF">
+
+	              <td>${birthdayView}</td>
+
+	              <td>*****</td>
+
+========================================================================
+
+
