@@ -1,0 +1,47 @@
+写法一、
+	private  Usre  user   =  new  Use();
+
+	public   User  getUser(){
+		System.out.println("get  has  run");			前台的请求  "user.name”，发现user存在
+		return  user;					就用 这个  use  对象 去执行 setName 方法
+	}
+	public User  setUser(User  user){
+		System.out.println("set  has  run");			所以，如果我们有 new 出 user 对象，就不用 set
+		this.user = user;					如果没有  get 方法，就用 set 方法 自动 new 出来的
+	}							对象封装 user 属性，每一个属性都 new 一个 use
+
+	然后我们前台提交数据封装，user 对象存在     User 有多少属性，就会执行多少次 “get   has  run ”，我们看看前台
+			          user 对象不存在     先尝试执行 getUser，发现use对象为 null，就自动 new  一个 User对象
+				执行结果："get  has  run"	尝试通过 getUser方法返回的 use 对象封装属性
+					"set  has  run"	发现 user 对象为 null
+					"get  has  run"	封装数据
+
+	<s:textfield   name ="user.name"   />				
+		这个的含义是   getUser.setName
+
+==============================================================================
+写法二、
+javaBean :
+public class  User{
+	public    User(){
+		System.out.println("init   model   has  run");	
+	}
+}
+
+
+
+	public   Usre  user   =  new  Use();			Struts尝试用 public 访问 user  对象，有对象，直接 用该user
+
+
+
+	public   User  getUser(){
+		System.out.println("get  has  run");			
+		return  user;					
+	}
+	public User  setUser(User  user){
+		System.out.println("set  has  run");			
+		this.user = user;					
+	}			
+
+
+
