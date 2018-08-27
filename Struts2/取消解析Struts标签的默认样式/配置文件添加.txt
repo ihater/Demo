@@ -1,0 +1,6 @@
+	<!-- 修改主题样式 -->
+	<constant name="struts.ui.theme" value="simple"/>
+
+因为Struts2标签解析，在把标签转化成HTML的时候，会默认添加一个  自己的  样式
+
+如果我们直接从Html  改成 Struts标签 的  时候，可能会出现样式错乱
