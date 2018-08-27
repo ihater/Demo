@@ -1,0 +1,21 @@
+   	<global-results>
+    		<!-- 必须跳转到一个全屏显示功能对应的页面 -->
+    		<result name="noLogin">index.jsp</result>
+    		<result name="error">/WEB-INF/jsps/error.jsp</result>
+    		<result name="list">/WEB-INF/jsps/${actionName}/list.jsp</result>
+    		<result name="toList" type="redirectAction">${actionName}_list</result>
+    		<result name="input">/WEB-INF/jsps/${actionName}/input.jsp</result>
+    	</global-results>
+    	 
+
+
+	public String getActionName(){							提供  get 方法，才能访问得到
+		//动态
+		//DepAction ->dep
+		//EmpAction ->emp
+		String actionName = this.getClass().getSimpleName();			获取当前访问的 action
+		//DepAction ->Dep
+		String temp = actionName.substring(0, actionName.length()-6);
+		//Dep ->dep		OrderDetailAction   ->orderDetail  orderdetail
+		return temp.substring(0,1).toLowerCase()+temp.substring(1);
+	}
