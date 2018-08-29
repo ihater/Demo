@@ -1,0 +1,22 @@
+Struts2标签不允许有EL表达爱上（${user.uuid}）	这么写是错的，标签不能解析EL表达式
+
+删除，修改：：
+	<s:a action="dep_input" cssClass="xiu">
+		<s:param name="dm.uuid" value="uuid"/>		这里是带请求参数
+		修改
+	</s:a>
+
+循环遍历：
+	<s:iterator value="depList">				其实应该写 #depList 但是标签 iterator 会去非根找
+		<tr align="center" bgcolor="#FFFFFF">
+		<td width="13%" height="30">${uuid}</td>	如果 迭代没有元素变量，这里就不用  #dep.uuid 这么写
+		<td>${name}</td>
+		<td>${tele}</td>
+
+判断：
+<s:if test="#depList.size() == 0">
+
+</s:if>
+<s:else>
+
+</s:else>
