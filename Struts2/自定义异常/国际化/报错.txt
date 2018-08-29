@@ -1,0 +1,4 @@
+
+		throw  new  AppException("INFO_ABOUT_ERROR")
+
+或者		throw  new  AppException(" 这个是我们自定义异常 ",e)

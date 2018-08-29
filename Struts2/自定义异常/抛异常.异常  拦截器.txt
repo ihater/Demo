@@ -1,0 +1,11 @@
+
+Dao层
+		throw  new  AppException(" 这个是我们自定义异常 ")
+或者		throw  new  AppException(" 这个是我们自定义异常 ",e)
+
+
+抛到 ACtion 层，我们就要 try  catch
+
+如果有很多 都要 try catch 的话，就会浪费 很多行 代码
+
+在  业务逻辑 前后 添加 判断  （  AOP   AOP   AOP！！！！！！！！！！！！！！我们就要做  异常  拦截器    异常  拦截器 ExceptionInterceptor   ）
