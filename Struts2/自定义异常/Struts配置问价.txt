@@ -1,0 +1,17 @@
+<interceptors>
+    		<interceptor name="loginInterceptor" class="cn.itcast.erp.util.interceptor.LoginInterceptor"/>
+
+    		<interceptor name="exceptionInterceptor" class="cn.itcast.erp.util.interceptor.ExceptionInterceptor"/>
+
+    		<interceptor name="authInterceptor" class="cn.itcast.erp.util.interceptor.AuthInterceptor"/>
+    		
+    		<interceptor-stack name="systemStack">
+
+    			<interceptor-ref name="exceptionInterceptor"/>		为了能拦截其他方法的 异常，所以，这个
+									拦截器要包在外面
+    			<interceptor-ref name="loginInterceptor"/>
+    			<interceptor-ref name="authInterceptor"/>
+    			<interceptor-ref name="defaultStack"/>
+    		</interceptor-stack>
+    		
+    	</interceptors>

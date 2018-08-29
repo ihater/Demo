@@ -1,0 +1,1 @@
+<constant name="struts.custom.i18n.resources" value="msg" />·		加载国际化配置文件
