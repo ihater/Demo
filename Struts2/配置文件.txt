@@ -1,0 +1,20 @@
+    	<interceptors>
+    		<interceptor name="loginInterceptor" class="cn.itcast.erp.util.interceptor.LoginInterceptor"/>
+    		
+    		
+    		<interceptor-stack name="systemStack">
+    			
+    			<interceptor-ref name="loginInterceptor"/>		先判断是否登录再去执行默认拦截器
+
+    			<interceptor-ref name="defaultStack"/>
+    		</interceptor-stack>
+    		
+    	</interceptors>
+    	
+    	<default-interceptor-ref name="systemStack"/>
+
+    	<global-results>
+    		<!-- 必须跳转到一个全屏显示功能对应的页面 -->
+    		<result name="noLogin">index.jsp</result>			拦截器是没有action视图，所以要在全局视图配置结果
+    		
+    	</global-results>
