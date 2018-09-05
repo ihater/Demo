@@ -1,0 +1,1 @@
+return ResultUtil.createSubmitResult(ResultUtil.createSuccess(message.preperties, 906, null));
