@@ -1,0 +1,4 @@
+//使用全局异常处理器后，在actoin不用进行try/catch捕获
+userService.insertSysuser(sysuserQueryVo.getSysuserCustom());
+
+因为，报错，在配置文件替换了默认而异常处理类，SpringMVC就会知道，就会 跳到我们的异常类
