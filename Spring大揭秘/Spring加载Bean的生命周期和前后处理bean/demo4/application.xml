@@ -1,0 +1,24 @@
+<!-- demo4Bean的生命周期==================================== -->
+	<!-- 
+		配置Bean的初始化和销毁的方法:
+		配置初始化和销毁的方法:								我们在Product 中写了  setup  和 tearDown 的方法
+			* init-method=”setup”
+			* destroy-method=”teardown”
+		执行销毁的时候,必须手动关闭工厂,而且只对scope=”singleton”有效.
+	 -->
+	 <bean id="customerService" class="cn.itcast.spring3.demo4.CustomerServiceImpl" init-method="setup" destroy-method="teardown">
+		<property name="name" value="itcast"></property>
+	</bean>
+	
+		<!--
+		怎么在相应的Bean之前处理Bean，我们只要把这个类交给（告诉）Spring就好了
+		Spring底层会判断 MyBeanPostProcessor  是否继承额 BeanPostProcessor
+		就可以在Bean 初始化之前 ，初始化之后，对其操作了。
+		而且，是所有的类，都会经历这个类（MyBeanPostProcessor）进行判断
+		-->
+	<bean class="cn.itcast.spring3.demo4.MyBeanPostProcessor"></bean> 
+	<!-- 
+		如果我们有后处理类，我们要我们的配置文件中设置一个东西，  <bean class="cn.itcast.spring3.demo4.MyBeanPostProcessor"></bean>
+		这个配置是不用  加  id 的，因为 我们的框架会自动调用它
+	 -->
+	<!-- demo4Bean的生命周期==================================== end-->
